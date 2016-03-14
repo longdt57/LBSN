@@ -17,6 +17,11 @@ public class MyPlace {
 		this.rate			= rate;
 	}
 	
+	public MyPlace(String id, double rate){
+		this.id		= id;
+		this.rate	= rate;
+	}
+	
 	public MyPlace(String id){
 		this.id = id;
 	}

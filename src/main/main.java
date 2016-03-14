@@ -11,7 +11,9 @@ public class main {
 		// TODO Auto-generated method stub
 		MyData brightkite_edge = new MyData();
 		brightkite_edge.setUsersFromFileSource(MyData.FRIENDEDGE_FILENAME);
-		brightkite_edge.setPlacesFromFileSource(MyData.CHECKIN_FILE);
+		//brightkite_edge.setPlacesFromFileSource(MyData.CHECKIN_FILE);
+		//brightkite_edge.savePlacestoFile(MyData.FILERATE);
+		brightkite_edge.readPlacesfromFile(MyData.FILERATE);
 		brightkite_edge.print();
 	}
 
