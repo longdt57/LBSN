@@ -8,8 +8,26 @@ import object.MyUser;
 public class Algorithms {
 	
 	public static Algorithms ALGORITHM 	= new Algorithms();
-	public static final int MIN_CHECKIN = 500;
+	
+	//xu ly du lieu
+	public static int MIN_CHECKIN 	= 0;
+	public static int MIN_PLACE		= 0;
+	public static int MIN_FRIEND 	= 0;
 
+	public void setAverageData(ArrayList<MyUser> users){
+		int scheckin=0, sfriend=0, splace =0;
+		for(int i=0;i<users.size(); i++){
+			MyUser user = users.get(i);
+			scheckin 	+= user.getnumcheckin();
+			sfriend  	+= user.getFriendlist().size();
+			splace 		+= user.getPlaceList().size();
+		}
+		MIN_CHECKIN = scheckin/users.size();
+		MIN_PLACE 	= splace/users.size();
+		MIN_FRIEND	= sfriend/users.size();
+	}
+	
+	//xem gia tri trug binh la rate 2.5
 	public void caculateRate(ArrayList<MyUser> users){
 		for(int i=0; i<users.size(); i++){
 			MyUser user = users.get(i);
@@ -23,7 +41,7 @@ public class Algorithms {
 			
 			for(int j=0; j<user.getPlaceList().size(); j++){
 				MyPlace place = user.getPlaceList().get(j);
-				double rate = place.getNumCheck()*5/(float)average_checkin<=5 ? place.getNumCheck()*5/(float)average_checkin:5;
+				double rate = place.getNumCheck()*2.5/(float)average_checkin<=5 ? place.getNumCheck()*5/(float)average_checkin:5;
 				place.setRate(rate);
 			}
 		}
@@ -52,23 +70,28 @@ public class Algorithms {
 	//giam kich thuoc dữ liệu, tim so place
 	public void preexcuteData(ArrayList<MyUser> users, ArrayList<MyPlace> places){
 		for(int i=0; i<users.size(); i++){
-			if(users.get(i).getnumcheckin()<MIN_CHECKIN) users.remove(i--);
-		}
-		
-		for(int i=0;i <users.size();i++){
 			MyUser user = users.get(i);
-			for(int j=0;j<user.getPlaceList().size(); j++){
-				MyPlace place = user.getPlaceList().get(j);
-				boolean isinplaces = false;
-				for(int k=0; k<places.size(); k++){
-					if(places.get(k).getId().compareTo(place.getId())==0){
-						isinplaces = true;
-						places.get(k).setNumcheck(places.get(k).getNumCheck()+place.getNumCheck());
-						break;
-					}
-				}
-				if(!isinplaces) places.add(place.clone());
-			}
+			if(user.getnumcheckin()<MIN_CHECKIN || user.getPlaceList().size()<MIN_PLACE) //users.remove(i--);
+				user=null;
 		}
+		int dem=0;
+//		for(int i=0;i <users.size();i++){
+//			MyUser user = users.get(i);
+//			dem+=user.getPlaceList().size();
+//			for(int j=0;j<user.getPlaceList().size(); j++){
+//				MyPlace place = user.getPlaceList().get(j);
+//				boolean isinplaces = false;
+//				for(int k=0; k<places.size(); k++){
+//					if(places.get(k).getId().compareTo(place.getId())==0){
+//						isinplaces = true;
+//						places.get(k).setNumcheck(places.get(k).getNumCheck()+place.getNumCheck());
+//						break;
+//					}
+//				}
+//				if(!isinplaces) places.add(place.clone());
+//				//System.out.println(place.toString());
+//			}
+//		}
+//		System.out.println("dem: "+dem);
 	}
 }

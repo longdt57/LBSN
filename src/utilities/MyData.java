@@ -21,22 +21,27 @@ import object.MyUser;
 
 public class MyData {
 	public static final String FRIENDEDGE_FILENAME 	= "Brightkite_edges.txt";
-	//public static final String CHECKIN_FILE		= "E:\\documents\\KLTN\\K57_He tu van\\LBSN\\Brightkite_totalCheckins.txt";
-	public static final String CHECKIN_FILE			= "F:\\hoctap\\hoctap\\nam 4\\KLTN\\K57_He tu van\\data\\Brightkite_totalCheckins.txt";
+	public static final String CHECKIN_FILE		= "E:\\documents\\KLTN\\K57_He tu van\\LBSN\\Brightkite_totalCheckins.txt";
+	//public static final String CHECKIN_FILE			= "F:\\hoctap\\hoctap\\nam 4\\KLTN\\K57_He tu van\\data\\Brightkite_totalCheckins.txt";
 	private static final int 	NUMBER_USER = 58228;
 	
-	public static final String FILERATE				= "rate-data.txt";
+	public static final String FILERATE				= "C:\\rate-data.txt";
 
 	
 	ArrayList<MyUser> users;
 	ArrayList<MyPlace> places;
+	boolean[][] user_relationship;//  = new boolean[NUMBER_USER][NUMBER_USER];
 	
 	public MyData(){
+		user_relationship  = new boolean[10000][10000];
 		users = new ArrayList<MyUser>();
 		places = new ArrayList<MyPlace>();
 		for(int i=0;i <NUMBER_USER; i++){
 			MyUser user = new MyUser(String.valueOf(i));
 			users.add(user);
+//			for(int j=0; j<NUMBER_USER; j++){
+//				user_relationship[i][j] = false;
+//			}
 		}
 	}
 	
@@ -73,7 +78,7 @@ public class MyData {
 					String id 		= data[4];
 					
 					MyPlace place = new MyPlace(id, lat, log, checkin);
-					MyPlace pl = place.clone();
+					//MyPlace pl = place.clone();
 					users.get(userid).addOrIncreasePlace(place);
 					
 //					boolean isinplaces = false;
@@ -99,6 +104,7 @@ public class MyData {
 			}
 			sc.close();
 			Algorithms.ALGORITHM.caculateRate(users);
+			Algorithms.ALGORITHM.setAverageData(users);
 			Algorithms.ALGORITHM.preexcuteData(users, places);
 			//sortbynumcheckin();
 		}catch(IOException e){
@@ -109,6 +115,7 @@ public class MyData {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	public boolean savePlacestoFile(String filename){
 		File file 				= new File(filename);
@@ -181,18 +188,7 @@ public class MyData {
 	}
 	
 	public void print(){
-//		for(int i=0;i<1000; i++){
-//			int max=0, maxpos=0;
-//			for(int j =1; j<users.size(); j++){
-//				if(max<users.get(j).getnumcheckin()){
-//					max = users.get(j).getnumcheckin();
-//					maxpos = j;
-//				}
-//			}
-//			System.out.println(i+" "+max);
-//			users.remove(maxpos);
-//		}
-		System.out.println(users.size());
-		System.out.println(places.size());
+		
+		System.out.println(users.size()+"\t "+places.size());
 	}
 }
