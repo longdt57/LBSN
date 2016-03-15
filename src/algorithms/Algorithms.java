@@ -7,7 +7,8 @@ import object.MyUser;
 
 public class Algorithms {
 	
-	public static Algorithms ALGORITHM = new Algorithms();
+	public static Algorithms ALGORITHM 	= new Algorithms();
+	public static final int MIN_CHECKIN = 500;
 
 	public void caculateRate(ArrayList<MyUser> users){
 		for(int i=0; i<users.size(); i++){
@@ -46,5 +47,28 @@ public class Algorithms {
 			return tu/Math.sqrt(mauA*mauB);
 		
 		return 0;
+	}
+	
+	//giam kich thuoc dữ liệu, tim so place
+	public void preexcuteData(ArrayList<MyUser> users, ArrayList<MyPlace> places){
+		for(int i=0; i<users.size(); i++){
+			if(users.get(i).getnumcheckin()<MIN_CHECKIN) users.remove(i--);
+		}
+		
+		for(int i=0;i <users.size();i++){
+			MyUser user = users.get(i);
+			for(int j=0;j<user.getPlaceList().size(); j++){
+				MyPlace place = user.getPlaceList().get(j);
+				boolean isinplaces = false;
+				for(int k=0; k<places.size(); k++){
+					if(places.get(k).getId().compareTo(place.getId())==0){
+						isinplaces = true;
+						places.get(k).setNumcheck(places.get(k).getNumCheck()+place.getNumCheck());
+						break;
+					}
+				}
+				if(!isinplaces) places.add(place.clone());
+			}
+		}
 	}
 }

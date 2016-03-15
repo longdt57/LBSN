@@ -1,5 +1,7 @@
 package object;
 
+import java.util.ArrayList;
+
 public class MyPlace {
 	String id;
 	double latitude;
@@ -8,6 +10,7 @@ public class MyPlace {
 	int numcheck = 1;
 	
 	double rate;
+	ArrayList<MyUser> userlist = new ArrayList<MyUser>();
 	
 	public MyPlace(String id, double lat, double log, String checkin, double rate){
 		this.id				= id;
@@ -32,6 +35,13 @@ public class MyPlace {
 		this.longitude		= log;
 		this.checkinTime	= checkin;
 	}
+	public MyPlace(String id, double lat, double log, String checkin, int numcheck){
+		this.id				= id;
+		this.latitude		= lat;
+		this.longitude		= log;
+		this.checkinTime	= checkin;
+		this.numcheck 		= numcheck;
+	}
 	
 	public String getId(){return id;}
 	public int getNumCheck(){return numcheck;}
@@ -47,5 +57,8 @@ public class MyPlace {
 	
 	public String toString(){
 		return "id: " + id + "\tNumcheck: " + numcheck + "\trate: "+rate;
+	}
+	public MyPlace clone(){
+		return new MyPlace(id, latitude, longitude,checkinTime, numcheck);
 	}
 }

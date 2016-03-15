@@ -29,9 +29,11 @@ public class MyData {
 
 	
 	ArrayList<MyUser> users;
+	ArrayList<MyPlace> places;
 	
 	public MyData(){
 		users = new ArrayList<MyUser>();
+		places = new ArrayList<MyPlace>();
 		for(int i=0;i <NUMBER_USER; i++){
 			MyUser user = new MyUser(String.valueOf(i));
 			users.add(user);
@@ -56,7 +58,7 @@ public class MyData {
 	}
 	
 	public void setPlacesFromFileSource(String filesource){
-		String linedatabefore = "";
+		//String linedatabefore = "";
 		String linedata = "";
 		try{
 			Scanner sc = new Scanner(new File(filesource));
@@ -71,8 +73,20 @@ public class MyData {
 					String id 		= data[4];
 					
 					MyPlace place = new MyPlace(id, lat, log, checkin);
+					MyPlace pl = place.clone();
 					users.get(userid).addOrIncreasePlace(place);
-					linedatabefore = linedata;
+					
+//					boolean isinplaces = false;
+//					for(int i=0; i<places.size(); i++){
+//						MyPlace pltmp = places.get(i);
+//						if(pltmp.getId().compareTo(pl.getId())==0){
+//							pltmp.setNumcheck(pltmp.getNumCheck()+1);
+//							isinplaces = true;
+//							break;
+//						}
+//					}
+//					if(!isinplaces) places.add(pl);
+					//linedatabefore = linedata;
 				}
 				
 //				int userid 		= sc.nextInt();
@@ -85,18 +99,15 @@ public class MyData {
 			}
 			sc.close();
 			Algorithms.ALGORITHM.caculateRate(users);
+			Algorithms.ALGORITHM.preexcuteData(users, places);
 			//sortbynumcheckin();
 		}catch(IOException e){
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println(linedatabefore);
+			//System.out.println(linedatabefore);
 			System.out.println(linedata);
 			e.printStackTrace();
 		}
-	}
-	
-	private void sortbynumcheckin(){
-		
 	}
 	
 	public boolean savePlacestoFile(String filename){
@@ -165,23 +176,23 @@ public class MyData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		} catch (IOException e){
-			e.printStackTrace();
 		}
 		return true;
 	}
 	
 	public void print(){
-		for(int i=0;i<1000; i++){
-			int max=0, maxpos=0;
-			for(int j =1; j<users.size(); j++){
-				if(max<users.get(j).getnumcheckin()){
-					max = users.get(j).getnumcheckin();
-					maxpos = j;
-				}
-			}
-			System.out.println(i+" "+max);
-			users.remove(maxpos);
-		}
+//		for(int i=0;i<1000; i++){
+//			int max=0, maxpos=0;
+//			for(int j =1; j<users.size(); j++){
+//				if(max<users.get(j).getnumcheckin()){
+//					max = users.get(j).getnumcheckin();
+//					maxpos = j;
+//				}
+//			}
+//			System.out.println(i+" "+max);
+//			users.remove(maxpos);
+//		}
+		System.out.println(users.size());
+		System.out.println(places.size());
 	}
 }
