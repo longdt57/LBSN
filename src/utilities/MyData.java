@@ -21,8 +21,8 @@ import object.MyUser;
 
 public class MyData {
 	public static final String FRIENDEDGE_FILENAME 	= "Brightkite_edges.txt";
-	public static final String CHECKIN_FILE		= "E:\\documents\\KLTN\\K57_He tu van\\LBSN\\Brightkite_totalCheckins.txt";
-	//public static final String CHECKIN_FILE			= "F:\\hoctap\\hoctap\\nam 4\\KLTN\\K57_He tu van\\data\\Brightkite_totalCheckins.txt";
+	//public static final String CHECKIN_FILE		= "E:\\documents\\KLTN\\K57_He tu van\\LBSN\\Brightkite_totalCheckins.txt";
+	public static final String CHECKIN_FILE			= "F:\\hoctap\\hoctap\\nam 4\\KLTN\\K57_He tu van\\data\\Brightkite_totalCheckins.txt";
 	private static final int 	NUMBER_USER = 58228;
 	
 	public static final String FILERATE				= "C:\\rate-data.txt";

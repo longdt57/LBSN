@@ -3,6 +3,8 @@ package object;
 import java.util.ArrayList;
 
 public class MyPlace {
+	
+	public static final String PLACE_ID 	= "placeid";
 	String id;
 	double latitude;
 	double longitude;
