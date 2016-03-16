@@ -4,7 +4,12 @@ import java.util.ArrayList;
 
 public class MyPlace {
 	
-	public static final String PLACE_ID 	= "placeid";
+	public static final String PLACE_ID 		= "placeid";
+	public static final String PLACE_NUMCHECK	= "numcheck";
+	public static final String LATITUDE			= "latitude";
+	public static final String LONGITUDE		= "longitude";
+	public static final String CHECKINTIME		= "checkintime";
+			
 	String id;
 	double latitude;
 	double longitude;

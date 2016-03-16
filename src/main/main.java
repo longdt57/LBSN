@@ -1,5 +1,6 @@
 package main;
 
+import algorithms.Algorithms;
 import utilities.MyData;
 
 public class main {
@@ -10,8 +11,12 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		MyData brightkite_edge = new MyData();
-		//brightkite_edge.setUsersFromFileSource(MyData.FRIENDEDGE_FILENAME);
+		brightkite_edge.setUsersFromFileSource(MyData.FRIENDEDGE_FILENAME);
 		brightkite_edge.setPlacesFromFileSource(MyData.CHECKIN_FILE);
+		
+		Algorithms.ALGORITHM.caculateRate(brightkite_edge.getUsers());
+		Algorithms.ALGORITHM.setAverageData(brightkite_edge.getUsers());
+		//Algorithms.ALGORITHM.preexcuteData(users, places);
 		//brightkite_edge.savePlacestoFile(MyData.FILERATE);
 		//brightkite_edge.readPlacesfromFile(MyData.FILERATE);
 		brightkite_edge.print();

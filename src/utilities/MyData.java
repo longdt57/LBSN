@@ -10,8 +10,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 
 import algorithms.Algorithms;
 
@@ -24,16 +30,15 @@ public class MyData {
 	//public static final String CHECKIN_FILE		= "E:\\documents\\KLTN\\K57_He tu van\\LBSN\\Brightkite_totalCheckins.txt";
 	public static final String CHECKIN_FILE			= "F:\\hoctap\\hoctap\\nam 4\\KLTN\\K57_He tu van\\data\\Brightkite_totalCheckins.txt";
 	private static final int 	NUMBER_USER = 58228;
+	public static final String RELATIONSHIP_TABLE 	= "friends";
 	
 	public static final String FILERATE				= "C:\\rate-data.txt";
 
 	
 	ArrayList<MyUser> users;
 	ArrayList<MyPlace> places;
-	boolean[][] user_relationship;//  = new boolean[NUMBER_USER][NUMBER_USER];
 	
 	public MyData(){
-		user_relationship  = new boolean[10000][10000];
 		users = new ArrayList<MyUser>();
 		places = new ArrayList<MyPlace>();
 		for(int i=0;i <NUMBER_USER; i++){
@@ -103,10 +108,7 @@ public class MyData {
 				
 			}
 			sc.close();
-			Algorithms.ALGORITHM.caculateRate(users);
-			Algorithms.ALGORITHM.setAverageData(users);
-			Algorithms.ALGORITHM.preexcuteData(users, places);
-			//sortbynumcheckin();
+			
 		}catch(IOException e){
 			e.printStackTrace();
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -188,7 +190,35 @@ public class MyData {
 	}
 	
 	public void print(){
+		for(int i=0; i<1; i++){
+			for(int j=0; j<users.get(i).getPlaceList().size(); j++)
+				System.out.println(users.get(i).getPlaceList().get(j).toString());
+		}
+		//System.out.println(users.size()+"\t "+places.size());
+	}
+	
+	public boolean saveRelationshipToDB(){
 		
-		System.out.println(users.size()+"\t "+places.size());
+		try {
+			MongoClient mongoClient 	= new MongoClient( "localhost" , 27017 );
+			DB db 						= mongoClient.getDB( "mydb" );
+			DBCollection collection		= db.getCollection(RELATIONSHIP_TABLE);
+			
+			for(int i=0;i <users.size(); i++){
+				MyUser user = users.get(i);
+				String listfriendid = "";
+				for(int j=0; j<user.getFriendlist().size(); j++){
+					listfriendid +=user.getFriendlist().get(j).getId()+" ";
+				}
+				BasicDBObject data = new BasicDBObject(MyUser.USER_ID, user.getId());
+				data.put(MyUser.FRIEND_LIST_ID, listfriendid);
+				collection.insert(data);
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

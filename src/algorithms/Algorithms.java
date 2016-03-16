@@ -37,7 +37,9 @@ public class Algorithms {
 	}
 	
 	//xem gia tri trug binh la rate 2.5
+	//tinh rate theo nguoi dung
 	public void caculateRate(ArrayList<MyUser> users){
+		System.out.println("Start caculate rate");
 		for(int i=0; i<users.size(); i++){
 			MyUser user = users.get(i);
 			int average_checkin = 0;
@@ -50,10 +52,11 @@ public class Algorithms {
 			
 			for(int j=0; j<user.getPlaceList().size(); j++){
 				MyPlace place = user.getPlaceList().get(j);
-				double rate = place.getNumCheck()*2.5/(float)average_checkin<=5 ? place.getNumCheck()*5/(float)average_checkin:5;
+				double rate = place.getNumCheck()*2.5/(float)average_checkin<=5 ? place.getNumCheck()*2.5/(float)average_checkin:5;
 				place.setRate(rate);
 			}
 		}
+		System.out.println("End caculaterate");
 	}
 	
 	public double getSimilary(MyUser userA, MyUser userB){
@@ -78,6 +81,7 @@ public class Algorithms {
 	
 	//giam kich thuoc dữ liệu, tim so place
 	public void preexcuteData(ArrayList<MyUser> users, ArrayList<MyPlace> places){
+		System.out.println("Start preexcutedata");
 //		for(int i=0; i<users.size(); i++){
 //			MyUser user = users.get(i);
 //			if(user.getnumcheckin()<MIN_CHECKIN || user.getPlaceList().size()<MIN_PLACE) //users.remove(i--);
@@ -90,26 +94,23 @@ public class Algorithms {
 					DB db 						= mongoClient.getDB( "mydb" );
 					DBCollection collection		= db.getCollection("places");
 					
-					int tongplace=0;
 					for(int i=0;i <users.size();i++){
 						MyUser user = users.get(i);
 //						dem+=user.getPlaceList().size();
 						for(int j=0;j<user.getPlaceList().size(); j++){
-							tongplace++;
 							
 							MyPlace place = user.getPlaceList().get(j);
 							
 							BasicDBObject data = new BasicDBObject(MyPlace.PLACE_ID, place.getId());
-							DBCursor cursor = collection.find(data);
-							if(cursor.count()<1)
-								collection.insert(data);
+							data.put(MyUser.USER_ID, user.getId());
+							data.put(MyPlace.PLACE_NUMCHECK, place.getNumCheck());
+							collection.insert(data);
 							
 						}
 					}
 					
 					
 					
-					System.out.println("Tong dia diem: "+tongplace);
 					DBCursor cursorDoc = collection.find();
 					System.out.println(cursorDoc.count());
 					
@@ -131,24 +132,7 @@ public class Algorithms {
 //		System.out.println("dem: "+dem);
 		//MongoClient mongoClient = new MongoClient();
 		// or
-		try {
-			MongoClient mongoClient 	= new MongoClient( "localhost" , 27017 );
-			DB db 						= mongoClient.getDB( "mydb" );
-			DBCollection collection		= db.getCollection("places");
-			
-			
-			System.out.println("Connection oke!");
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// or
-		
-		// or, to connect to a replica set, with auto-discovery of the primary, supply a seed list of members
-//		MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost", 27017),
-//		                                      new ServerAddress("localhost", 27018),
-//		                                      new ServerAddress("localhost", 27019)));
-
+		System.out.println("End preexcute data");
 		
 	}
 }

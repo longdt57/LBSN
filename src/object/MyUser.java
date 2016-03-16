@@ -3,6 +3,9 @@ package object;
 import java.util.ArrayList;
 
 public class MyUser {
+	
+	public static final String USER_ID 		= "userid";
+	public static final String FRIEND_LIST_ID	= "friendlistid";
 	String id;
 	ArrayList<MyUser> friendlist;
 	ArrayList<MyPlace> placelist;
