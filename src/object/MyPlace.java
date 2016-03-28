@@ -9,6 +9,7 @@ public class MyPlace {
 	public static final String LATITUDE			= "latitude";
 	public static final String LONGITUDE		= "longitude";
 	public static final String CHECKINTIME		= "checkintime";
+	public static final String NUMPEOPLE		= "numpeople";
 			
 	String id;
 	double latitude;
@@ -17,7 +18,8 @@ public class MyPlace {
 	int numcheck = 1;
 	
 	double rate;
-	ArrayList<MyUser> userlist = new ArrayList<MyUser>();
+	ArrayList<String> userlist = new ArrayList<String>();
+	int numpeoplecheck = 0;
 	
 	public MyPlace(String id, double lat, double log, String checkin, double rate){
 		this.id				= id;
@@ -49,6 +51,10 @@ public class MyPlace {
 		this.checkinTime	= checkin;
 		this.numcheck 		= numcheck;
 	}
+	public MyPlace(String id, int numcheck){
+		this.id 		= id;
+		this.numcheck 	= numcheck;
+	}
 	
 	public String getId(){return id;}
 	public int getNumCheck(){return numcheck;}
@@ -56,6 +62,9 @@ public class MyPlace {
 	
 	public void setNumcheck(int num){numcheck = num;}
 	public void setRate(double rate){this.rate = rate;}
+	public void setNumPeople(int numpeople){
+		this.numpeoplecheck = numpeople;
+	}
 	
 	public boolean isSame(MyPlace place){
 		if(id.compareTo(place.getId())==0) return true;
@@ -68,4 +77,6 @@ public class MyPlace {
 	public MyPlace clone(){
 		return new MyPlace(id, latitude, longitude,checkinTime, numcheck);
 	}
+	public void increasenumpeoplecheck(){numpeoplecheck++;}
+	public int getNumpeoplecheck(){return numpeoplecheck;}
 }

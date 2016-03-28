@@ -7,6 +7,7 @@ public class MyUser {
 	public static final String USER_ID 		= "userid";
 	public static final String FRIEND_LIST_ID	= "friendlistid";
 	String id;
+	int id2;
 	ArrayList<MyUser> friendlist;
 	ArrayList<MyPlace> placelist;
 	ArrayList<Float> similarities;
@@ -52,4 +53,7 @@ public class MyUser {
 		}
 		return num;
 	}
+	public void setId2(int id){this.id2 = id;}
+	public int getId2(){return id2;}
+	
 }
