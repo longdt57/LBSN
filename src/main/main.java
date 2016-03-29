@@ -4,6 +4,7 @@ import object.MyDatabase;
 import object.MyLog;
 import algorithms.Algorithms;
 import utilities.MyData;
+import utilities.MyDatabaseHelper;
 
 public class main {
 	
@@ -12,7 +13,7 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		preexcuteData();
+		//preexcuteData();
 		
 //		MyData data = new MyData();
 //		MyDatabase database = new MyDatabase("localhost", 27017, "mydb");
@@ -26,6 +27,15 @@ public class main {
 //		
 //		Algorithms.ALGORITHM.setAverageData(data, database);
 //		data.print(database);
+		
+		MyData data = new MyData(830);
+		data.setPlacesFromFileSourceWithDate(MyData.CHECKIN_FILE_FILTER);
+		MyData trainingdata, testdata = null;
+		trainingdata = data.getTrainningAndTestData(testdata);
+		trainingdata.setUsersFromFileSource(MyData.FRIENDEDGE_FILENAME_FILTER);
+		Algorithms.ALGORITHM.caculateRatebyPerson(trainingdata.getUsers());
+		trainingdata.calculateSim();
+		trainingdata.print();
 	}
 	
 	public static void preexcuteData(){
@@ -43,21 +53,24 @@ public class main {
 		
 		
 		Algorithms.ALGORITHM.preexcuteUser(brightkite_edge.getUsers(), brightkite_edge.getPlaces(), database);
-		//brightkite_edge.saveNumPlacecheckinbyPerson(database, MyData.PERSON_PLACE_CHECKIN_COLLECTION);
+		MyDatabaseHelper.saveNumPlacecheckinbyPerson(database, MyData.PERSON_PLACE_CHECKIN_COLLECTION, 
+				brightkite_edge.getUsers());
 		
-		//brightkite_edge.readPlacefromDB(database, MyData.PERSON_PLACE_CHECKIN_COLLECTION);
+		MyDatabaseHelper.readPlacefromDB(database, MyData.PERSON_PLACE_CHECKIN_COLLECTION, brightkite_edge.getPlaces());
 		
 		
-		//Algorithms.ALGORITHM.preexcutePlace(brightkite_edge.getPlaces());
-		//brightkite_edge.savePlacebyCheckinsandPeople(database);
+		Algorithms.ALGORITHM.preexcutePlace(brightkite_edge.getPlaces());
+		MyDatabaseHelper.savePlacebyCheckinsandPeople(database, brightkite_edge.getPlaces());
 		//Algorithms.ALGORITHM.refreshPlace(brightkite_edge.getUsers(), brightkite_edge.getPlaces(), database);
 		Algorithms.ALGORITHM.refreshFriend(brightkite_edge.getUsers());
 		
-		//brightkite_edge.saveNumPlacecheckinbyPerson(database, MyData.PERSON_PLACE_CHECKIN_COLLECTION_FINAL);
-		//Algorithms.ALGORITHM.setAverageData(brightkite_edge,database);
-		brightkite_edge.print(database);
+		MyDatabaseHelper.saveNumPlacecheckinbyPerson(database, MyData.PERSON_PLACE_CHECKIN_COLLECTION_FINAL, 
+				brightkite_edge.getUsers());
+		Algorithms.ALGORITHM.setAverageData(brightkite_edge,database);
+		brightkite_edge.print();
 		
-		brightkite_edge.writefilterfriendToFile(MyData.FRIENDEDGE_FILENAME_FILTER);
+		brightkite_edge.writeFilterfriendToFile(MyData.FRIENDEDGE_FILENAME_FILTER);
+		brightkite_edge.writeFilterPlacesToFile(MyData.CHECKIN_FILE_FILTER, MyData.CHECKIN_FILE, database);
 		
 		long timeend = System.currentTimeMillis();
 		MyLog.log("Get out preexcuteData, excute data in: "+(timeend-timestart));

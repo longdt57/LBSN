@@ -1,6 +1,7 @@
 package object;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MyUser {
 	
@@ -8,9 +9,10 @@ public class MyUser {
 	public static final String FRIEND_LIST_ID	= "friendlistid";
 	String id;
 	int id2;
+	boolean isvalue = true;
 	ArrayList<MyUser> friendlist;
 	ArrayList<MyPlace> placelist;
-	ArrayList<Float> similarities;
+	ArrayList<Double> friendsimilarities = new ArrayList<Double>();
 	
 	
 	public MyUser(String id, ArrayList<MyUser> friends, ArrayList<MyPlace> places){
@@ -55,5 +57,28 @@ public class MyUser {
 	}
 	public void setId2(int id){this.id2 = id;}
 	public int getId2(){return id2;}
+	public void setIsvalue(boolean isvalue){ this.isvalue = isvalue;}
+	public boolean getIsvalue(){
+		return isvalue;
+	}
+	public void addPlace(MyPlace place){
+		placelist.add(place);
+	}
 	
+	public void sortPlacelistByDate(){
+		for(int i=0; i<placelist.size()-1; i++){
+			for(int j = i+1; j<placelist.size(); j++){
+				Date date1 = FunctionConstant.getDatefromString(placelist.get(i).getCheckinTime());
+				Date date2 = FunctionConstant.getDatefromString(placelist.get(j).getCheckinTime());
+				if(date1.after(date2)){
+					MyPlace placetmp = placelist.get(j);
+					placelist.remove(j);
+					placelist.add(j, placelist.get(i));
+					placelist.remove(i);
+					placelist.add(i, placetmp);
+				}
+			}
+		}
+	}
+	public ArrayList<Double> getfriendsim(){return friendsimilarities;}
 }

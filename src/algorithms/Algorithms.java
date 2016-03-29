@@ -7,6 +7,7 @@ import object.MyLog;
 import object.MyPlace;
 import object.MyUser;
 import utilities.MyData;
+import utilities.MyDatabaseHelper;
 
 
 public class Algorithms {
@@ -77,6 +78,7 @@ public class Algorithms {
 				MyPlace place = user.getPlaceList().get(j);
 				average_checkin += place.getNumCheck();
 			}
+			
 			if(user.getPlaceList().size()!=0)
 				average_checkin /= user.getPlaceList().size();
 			
@@ -117,21 +119,7 @@ public class Algorithms {
 		MyLog.log("Get out preexcutedPlace");
 	}
 	
-	public void refreshFriend(ArrayList<MyUser> users){
-		MyLog.log("Entered refreshfriend");
-		int id2 = 0;
-		for(int i=0; i<users.size(); i++)
-			if(MyData.isvalue(users.get(i))){
-				users.get(i).setId2(id2++);
-				for(int j=0; j<users.get(i).getFriendlist().size(); j++){
-					if(!MyData.isvalue(users.get(i).getFriendlist().get(j))){
-						users.get(i).getFriendlist().remove(j);
-						j--;
-					}
-				}
-			}
-		MyLog.log("Get out refreshfriend");
-	}
+	
 	public void refreshPlace(ArrayList<MyUser> users, ArrayList<MyPlace> places, MyDatabase database){
 		MyLog.log("Entered refreshPlace");
 		long timestart = System.currentTimeMillis();
@@ -139,7 +127,7 @@ public class Algorithms {
 			MyUser user = users.get(i);
 			if(MyData.isvalue(user))
 			for(int j=0; j<user.getPlaceList().size(); j++){
-				if(!MyData.isInplaces(user.getPlaceList().get(j).getId(), database)){
+				if(!MyDatabaseHelper.isInplaces(user.getPlaceList().get(j).getId(), database)){
 					user.getPlaceList().remove(j);
 					j--;
 				}
@@ -156,10 +144,26 @@ public class Algorithms {
 			MyUser user = users.get(i);
 			if(user.getnumcheckin()<88*4 || user.getPlaceList().size()<21*4
 					|| user.getFriendlist().size()<8*4) //users.remove(i--);
-				users.set(i, null);
+				//users.set(i, null);
+				users.get(i).setIsvalue(false);
 		}
 		
 		System.out.println("End preexcute data");
 		
+	}
+	public void refreshFriend(ArrayList<MyUser> users){
+		MyLog.log("Entered refreshfriend");
+		int id2 = 0;
+		for(int i=0; i<users.size(); i++)
+			if(MyData.isvalue(users.get(i))){
+				users.get(i).setId2(id2++);
+				for(int j=0; j<users.get(i).getFriendlist().size(); j++){
+					if(!MyData.isvalue(users.get(i).getFriendlist().get(j))){
+						users.get(i).getFriendlist().remove(j);
+						j--;
+					}
+				}
+			}
+		MyLog.log("Get out refreshfriend");
 	}
 }

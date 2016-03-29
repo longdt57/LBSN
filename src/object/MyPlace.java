@@ -72,11 +72,12 @@ public class MyPlace {
 	}
 	
 	public String toString(){
-		return "id: " + id + "\tNumcheck: " + numcheck + "\trate: "+rate;
+		return "id: " + id + "\tDate:"+checkinTime;
 	}
 	public MyPlace clone(){
 		return new MyPlace(id, latitude, longitude,checkinTime, numcheck);
 	}
 	public void increasenumpeoplecheck(){numpeoplecheck++;}
 	public int getNumpeoplecheck(){return numpeoplecheck;}
+	public String getCheckinTime(){return checkinTime;}
 }
